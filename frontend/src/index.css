@@ -1,6 +1,17 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: "#F8711B";
+  --color-primary: #F8711B;
   --text-size: 2xl;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* For Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
 }
