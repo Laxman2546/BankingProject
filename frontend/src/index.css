@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #F8711B;
+  --color-primary: #f28c28;
+  --color-secondary: #cc5500;
   --text-size: 2xl;
 }
 
@@ -14,4 +15,22 @@ input::-webkit-inner-spin-button {
 /* For Firefox */
 input[type="number"] {
   -moz-appearance: textfield;
+}
+
+/* Add these styles to your CSS file */
+.perspective {
+  perspective: 1000px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
