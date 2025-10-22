@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import logo from "../assets/logo.png";
 import chip from "../assets/chip.png";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const [name, setName] = useState("");
@@ -59,8 +60,8 @@ const Login = () => {
   };
 
   return (
-    <div className="w-full min-h-screen flex flex-col lg:flex-row items-center justify-center gap-8 p-4 lg:p-8">
-      <div className="w-full lg:w-1/2 flex flex-col gap-5 max-w-md  p-6 lg:p-8 rounded-3xl ">
+    <div className="w-full min-h-screen flex flex-col lg:flex-row items-center justify-center gap-2 p-4 lg:p-8">
+      <div className="w-full lg:w-1/2 flex flex-col gap-3 max-w-md  p-6 lg:p-8 rounded-3xl ">
         <h1 className="text-2xl font-semibold">Get started!</h1>
 
         <div className="flex flex-col">
@@ -132,9 +133,9 @@ const Login = () => {
         <div>
           <p className="text-center">
             Have an account?{" "}
-            <a className="cursor-pointer hover:underline hover:text-primary">
-              Login
-            </a>
+              <Link to="/login" className="cursor-pointer hover:underline hover:text-primary">
+                Login
+              </Link >
           </p>
         </div>
       </div>
