@@ -143,9 +143,12 @@ const Register = () => {
               </div>
             </div>
           </div>
-          <button className="mt-6  bg-primary flex items-center justify-center p-3 rounded-2xl hover:bg-secondary transition-colors cursor-pointer text-white font-semibold" onClick={()=>setshowcard(false)}>
+          <Link to={"/homepage"}>
+          <button  className="mt-6  bg-primary flex items-center justify-center p-3 rounded-2xl hover:bg-secondary transition-colors cursor-pointer text-white font-semibold" onClick={()=>setshowcard(false)}>
            Confirm Details
           </button>
+          </Link>
+          
         </div>
         ):(
  <div className="w-full lg:w-1/2 flex flex-col gap-3 max-w-md  p-6 lg:p-8 rounded-3xl ">
