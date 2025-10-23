@@ -110,7 +110,7 @@ const Register = () => {
                 <div className="text-white flex flex-col text-center">
                   <p className="text-xs sm:text-sm">Valid Thru</p>
                   <p className="text-sm sm:text-base font-mono">
-                    {valid ? valid : "12/26"}
+                    {valid ? valid : "MM/YY"}
                   </p>
                 </div>
               </div>
@@ -132,7 +132,7 @@ const Register = () => {
                 <div className="w-full p-4 sm:p-5 flex flex-row items-center mt-2">
                   <div className="h-8 sm:h-12 w-full bg-[repeating-linear-gradient(#fff_0_2px,#efefef_2px_6px)]"></div>
                   <div className="bg-white text-black p-1 sm:p-2 rounded-r-lg text-xs sm:text-sm font-mono min-w-[40px] text-center">
-                    {cvv ? cvv : "622"}
+                    {cvv ? cvv : "***"}
                   </div>
                 </div>
   

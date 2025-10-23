@@ -2,6 +2,7 @@ import React from 'react'
 import {  BsBank } from "react-icons/bs";
 import { LuLogOut } from "react-icons/lu";
 import { FaWallet } from "react-icons/fa6";
+import Cards from "../components/Cards"
 const HomePage = () => {
   return (
     <div className='w-full h-screen bg-gray-100 p-3'>
@@ -20,15 +21,7 @@ const HomePage = () => {
       <h1 className='text-2xl font-semibold '>Welcome Back, Lakshman</h1>
       <p className="text-gray-400 text-md ">here's your account overview</p>
     </div>
-    <div className='w-full p-5 flex flex-col items-start'>
-      <div className='w-full bg-white p-5 rounded-lg '>
-        <div className='max-w-1/2 flex flex-row justify-between'>
-        <h2 className='text-xl font-semibold '>Current Balance</h2>
-        <FaWallet size={40} className="mt-4 text-primary"/>
-        </div>
-        <p className='text-3xl font-bold'>$12,345.67</p>
-      </div>
-    </div>
+    <Cards/>
     </div>
   )
 }
