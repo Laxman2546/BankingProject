@@ -3,6 +3,7 @@ import { FaWallet } from "react-icons/fa";
 import { IoMdTrendingUp } from "react-icons/io";
 import { FaCreditCard } from "react-icons/fa";
 import { FaDollarSign } from "react-icons/fa";
+import { FaArrowDown } from "react-icons/fa";
 export default function BalanceDashboard() {
   const cards = [
     {
@@ -14,29 +15,13 @@ export default function BalanceDashboard() {
       textColor: 'text-blue-600'
     },
     {
-      title: 'Total Income',
+      title: 'Recent Deposit',
       amount: '$45,678.90',
-      icon: IoMdTrendingUp,
+      icon: FaArrowDown,
       color: 'from-green-500 to-green-600',
       bgColor: 'bg-green-50',
       textColor: 'text-green-600'
     },
-    {
-      title: 'Total Expenses',
-      amount: '$33,333.23',
-      icon: FaDollarSign,
-      color: 'from-orange-500 to-orange-600',
-      bgColor: 'bg-orange-50',
-      textColor: 'text-orange-600'
-    },
-    {
-      title: 'Available Credit',
-      amount: '$8,500.00',
-      icon: FaCreditCard,
-      color: 'from-purple-500 to-purple-600',
-      bgColor: 'bg-purple-50',
-      textColor: 'text-purple-600'
-    }
   ];
 
   return (
@@ -68,22 +53,24 @@ export default function BalanceDashboard() {
                       <Icon size={24} className={card.textColor} />
                     </div>
                   </div>
-                  
-                  {/* Optional: Add a subtle trend indicator */}
+                  {card.title == "Current Balance" ?
                   <div className='flex items-center text-xs text-gray-500 mt-2'>
+                  
+                    <button className='text-white bg-primary p-3'>Deposit Money</button>
+                  
+                  </div>
+                   :
+                   <div className='flex items-center text-xs text-gray-500 mt-2'>
                     <span className='inline-block w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse'></span>
                     <span>Updated just now</span>
-                  </div>
+                  </div>}
                 </div>
-
-                {/* Hover effect overlay */}
                 <div className={`absolute inset-0 bg-gradient-to-r ${card.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300 pointer-events-none`}></div>
               </div>
             );
           })}
         </div>
 
-        {/* Optional: Add a quick actions section */}
         <div className='mt-8 bg-white rounded-2xl shadow-md p-6'>
           <h3 className='text-lg font-semibold text-gray-800 mb-4'>Quick Actions</h3>
           <div className='flex flex-wrap gap-3'>
