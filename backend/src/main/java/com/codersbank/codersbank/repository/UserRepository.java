@@ -13,8 +13,24 @@ public class UserRepository {
     private JdbcTemplate jdbcTemplate;
 
     public List<UserModel> getAllUsers() {
-        String sql = "SELECT id, name FROM users";
+        String sql = "SELECT * FROM users";
         return jdbcTemplate.query(sql, (rs, rowNum) ->
-                new UserModel(rs.getInt("id"), rs.getString("name")));
+                new UserModel(rs.getInt("id"), rs.getString("name"),rs.getLong("accountnumber"),rs.getInt("pin"),rs.getInt("valid")));
     }
+    public UserModel getUserById(int id){
+        String sql  = "SELECT id,name FROM users WHERE id = ?";
+        return jdbcTemplate.queryForObject(sql,new Object[]{id},
+        (rs,rownum) -> new UserModel(rs.getInt("id"),rs.getString("name")));
+    }
+
+    public String addUser(UserModel user ){
+        String sql= "INSERT INTO users(name,accountnumber,pin,valid) VALUES(?,?,?,?)";
+        int result = jdbcTemplate.update(sql, user.getName(),user.getAccountNumber(),user.getPin(),user.getValid());
+        if(result > 0){
+            return "user added sucessfully";
+        }else{
+            return "failed user added";
+        }
+    }
+
 }

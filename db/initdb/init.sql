@@ -1,17 +1,12 @@
--- Create database if it doesn't exist
-CREATE DATABASE IF NOT EXISTS codersbank;
-
--- Use the database
-USE codersbank;
-
--- Create 'users' table
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL
+    name VARCHAR(100) NOT NULL,
+    accountnumber BIGINT NOT NULL,
+    pin INT NOT NULL,
+    valid INT NOT NULL
 );
 
--- Insert sample data
-INSERT INTO users (name) VALUES 
-('Ella Lakshman'),
-('E Vandana'),
-('E Suryaprakash');
+INSERT INTO users (name, accountnumber, pin, valid) VALUES
+('Ella Lakshman', 1234567891234567, 2004, 1227),
+('E Vandana', 1234568888888888, 2004, 1227),
+('E Suryaprakash', 1234567777777777, 2004, 1227);

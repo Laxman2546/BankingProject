@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/users")
 @CrossOrigin(origins = "*")
 
 
@@ -14,8 +14,16 @@ public class UserController {
 
     @Autowired
     private UserRepository repo;
-    @GetMapping("/users")
+    @GetMapping
     public List <UserModel> getUsers(){
         return repo.getAllUsers();
-    } 
+    }
+    @PostMapping("/add")
+    public String addUser(@RequestBody UserModel user){
+        return repo.addUser(user);
+    }
+    @GetMapping("/{id}")
+    public UserModel  getUserById(@PathVariable int id){
+        return repo.getUserById(id);
+    }
 }
