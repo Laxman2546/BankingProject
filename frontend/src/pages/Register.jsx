@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../assets/logo.png";
 import chip from "../assets/chip.png";
 import { Link } from "react-router-dom";
+import axios from "axios";
 const Register = () => {
       const [name, setName] = useState("");
       const [cvv, setCvv] = useState("");
@@ -9,16 +10,32 @@ const Register = () => {
       const [pin, setPin] = useState("");
       const [valid, setValid] = useState("");
       const [isRotated, setIsRotated] = useState(false);
-        const[showcard,setshowcard]=useState(false);
+      const[showcard,setshowcard]=useState(false);
 
-    
+      const getData = async() =>{
+        try{
+          const response = await axios.get("https://fantastic-lamp-v66gvgj666vrc6wgp-8080.app.github.dev/api/users", {
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            }
+          });
+          console.log("Response:", response.data);
+        }catch(e){
+          console.error("Error fetching users:", e.response?.data || e.message);
+        }
+      }
+
+      useEffect(() =>{
+        getData();
+      },[])
       const handleAccountNumberChange = (e) => {
         const value = e.target.value.replace(/\D/g, "");
         if (value.length <= 16) {
           setAccountNumber(value);
         }
       };
-    
+      
       const handleCvvChange = (e) => {
         const value = e.target.value.replace(/\D/g, "");
         if (value.length <= 3) {
