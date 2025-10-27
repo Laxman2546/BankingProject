@@ -5,12 +5,12 @@ public class UserModel {
     private String name;
     private long accountnumber;
     private int pin;
-    private int valid;
+    private String valid;
     private int cvv;
 
     public UserModel() {}
 
-    public UserModel(int id, String name, long accountnumber, int pin, int valid, int cvv) {
+    public UserModel(int id, String name, long accountnumber, int pin, String valid, int cvv) {
         this.id = id;
         this.name = name;
         this.accountnumber = accountnumber;
@@ -42,8 +42,8 @@ public class UserModel {
     public int getPin() { return pin; }
     public void setPin(int pin) { this.pin = pin; }
 
-    public int getValid() { return valid; }
-    public void setValid(int valid) { this.valid = valid; }
+    public String getValid() { return valid; }
+    public void setValid(String valid) { this.valid = valid; }
 
     public int getCvv() { return cvv; }
     public void setCvv(int cvv) { this.cvv = cvv; }

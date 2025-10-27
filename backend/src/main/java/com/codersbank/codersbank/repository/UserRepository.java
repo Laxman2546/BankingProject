@@ -15,12 +15,12 @@ public class UserRepository {
     public List<UserModel> getAllUsers() {
         String sql = "SELECT * FROM users";
         return jdbcTemplate.query(sql, (rs, rowNum) ->
-                new UserModel(rs.getInt("id"), rs.getString("name"),rs.getLong("accountnumber"),rs.getInt("pin"),rs.getInt("valid"),rs.getInt("cvv")));
+                new UserModel(rs.getInt("id"), rs.getString("name"),rs.getLong("accountnumber"),rs.getInt("pin"),rs.getString("valid"),rs.getInt("cvv")));
     }
     public UserModel getUserById(int id){
         String sql  = "SELECT * FROM users WHERE id = ?";
         return jdbcTemplate.queryForObject(sql,new Object[]{id},
-        (rs,rownum) -> new UserModel(rs.getInt("id"), rs.getString("name"), rs.getLong("accountnumber"), rs.getInt("pin"), rs.getInt("valid"), rs.getInt("cvv")));
+        (rs,rownum) -> new UserModel(rs.getInt("id"), rs.getString("name"), rs.getLong("accountnumber"), rs.getInt("pin"), rs.getString("valid"), rs.getInt("cvv")));
     }
 
     public String addUser(UserModel user ){

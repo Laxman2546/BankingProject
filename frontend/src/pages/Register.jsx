@@ -14,7 +14,7 @@ const Register = () => {
 
       const getData = async() =>{
         try{
-          const response = await axios.get("https://fantastic-lamp-v66gvgj666vrc6wgp-8080.app.github.dev/api/users", {
+          const response = await axios.get(`${import.meta.env.VITE_BACKEND_URI}/api/users`, {
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json'

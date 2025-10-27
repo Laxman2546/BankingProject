@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import logo from "../assets/logo.png";
 import chip from "../assets/chip.png";
 import { Link } from "react-router-dom";
-
+import axios from "axios";
 const Login = () => {
   const [name, setName] = useState("");
   const [cvv, setCvv] = useState("");
@@ -58,12 +58,32 @@ const Login = () => {
       setValid(`${value.slice(0, 2)} / ${value.slice(2, 4)}`);
     }
   };
+  const submitDetails =async() =>{
+    try{
+    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URI}/api/users/add`,{
+      name,
+      accountNumber,
+      cvv,
+      pin,
+      valid
+    },
+    {
+      withCredentials:true
+    });
+    console.log(response)
+    }catch(e){
+      console.log(e,"something went wrong while submitting the details")
+    }
 
+  }
   return (
     <div className="w-full min-h-screen flex flex-col lg:flex-row items-center justify-center gap-2 p-4 lg:p-8">
       <div className="w-full lg:w-1/2 flex flex-col gap-3 max-w-md  p-6 lg:p-8 rounded-3xl ">
         <h1 className="text-2xl font-semibold">Get started!</h1>
-
+    <form onSubmit={(e) =>{
+      e.preventDefault();
+      submitDetails();
+    }}>
         <div className="flex flex-col">
           <label className="p-2 font-medium">Name</label>
           <input
@@ -127,9 +147,11 @@ const Login = () => {
           />
         </div>
 
-        <button className="w-full bg-primary flex items-center justify-center p-3 rounded-2xl hover:bg-secondary transition-colors cursor-pointer text-white font-semibold">
+        <button type="submit" className=" mt-5 w-full bg-primary flex items-center justify-center p-3 rounded-2xl hover:bg-secondary transition-colors cursor-pointer text-white font-semibold">
           Register Account
         </button>
+    </form>
+
         <div>
           <p className="text-center">
             Have an account?{" "}
