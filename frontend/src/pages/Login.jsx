@@ -70,10 +70,14 @@ const Login = () => {
     {
       withCredentials:true
     });
-    if(response.status == 200){
-      console.log(response.data)
-      navigate("/homepage")
-    }
+    if (response.status === 200) {
+    localStorage.setItem("accountdetails", JSON.stringify({
+  accountnumber: response?.data?.accountNumber,
+  username: response?.data?.name
+    }));       console.log("Account details saved:", response.data);
+    navigate("/homepage");
+}
+
     }catch(e){
       console.log(e,"something went wrong while submitting the details")
     }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect ,useState} from 'react'
 import {  BsBank } from "react-icons/bs";
 import { LuLogOut } from "react-icons/lu";
 import { FaWallet } from "react-icons/fa6";
@@ -6,9 +6,22 @@ import Cards from "../components/Cards"
 import { useNavigate } from 'react-router-dom';
 const HomePage = () => {
   const navigate = useNavigate();
+  const [name,setName] = useState("");
+  const [accountNumber,setAccountNumber] = useState("");
   const handleLogout = () =>{
+    const removeAccount = localStorage.removeItem("accountdetails");
+    console.log(removeAccount,"removeAccount");
     navigate("/login");
   }
+  useEffect(() =>{
+    const username = localStorage.getItem("accountdetails");
+    if(!username){
+      navigate("/login");
+    }else{
+      setName(JSON.parse(username).username);
+      setAccountNumber(JSON.parse(username).accountnumber);
+    }
+  })
   return (
     <div className='w-full h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-3'>
     <nav className='w-full flex flex-row items-center pr-12 justify-between bg-gray-100 '>
@@ -22,8 +35,8 @@ const HomePage = () => {
       </div>
 
     </nav>
-    <div className='p-5 '>
-      <h1 className='text-2xl font-semibold '>Welcome Back, Lakshman</h1>
+    <div className='p-5'>
+      <h1 className='text-2xl font-semibold '>Welcome Back, {name}</h1>
       <p className="text-gray-400 text-md ">here's your account overview</p>
     </div>
     <Cards/>

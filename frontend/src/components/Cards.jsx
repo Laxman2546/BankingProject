@@ -29,9 +29,8 @@ export default function BalanceDashboard() {
       console.log("depositeamout")
     }
   return (
-    <div className='min-h-calc(100vh-80px) bg-gradient-to-br from-gray-50 to-gray-100 p-4 sm:p-6 lg:p-8'>
-      <div className="max-w-7xl mx-auto">
-        
+    <div className='min-h-calc(100vh-80px) bg-gradient-to-br from-gray-50 to-gray-100 p-2 sm:p-3 lg:p-5'>
+      <div className="max-w-7xl">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {cards.map((card, index) => {
             const Icon = card.icon;

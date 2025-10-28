@@ -37,11 +37,9 @@ const Register = () => {
         }
       };
       
-      const handleCvvChange = (e) => {
-        const value = e.target.value.replace(/\D/g, "");
-        if (value.length <= 3) {
-          setCvv(value);
-        }
+      const handleCvvChange = (value) => {
+        const cleanValue = value.toString().replace(/\D/g, "");
+        return cleanValue.slice(0, 3);
       };
     
       const handlePinChange = (e) => {
@@ -51,10 +49,10 @@ const Register = () => {
         }
       };
     
-      const formatCardNumber = (cleanNumber) => {
+      const formatCardNumber = (number) => {
+       const cleanNumber = number.toString().replace(/\s/g, "");
         if (!cleanNumber) return "1234 XXXX XXXX 2546";
-    
-         
+        
         const len = cleanNumber.length;
     
         if (len <= 4) return cleanNumber;
@@ -66,16 +64,9 @@ const Register = () => {
         return `${cleanNumber.slice(0, 4)} XXXX XXXX ${cleanNumber.slice(12)}`;
       };
     
-      const handleValid = (e) => {
-        const value = e.target.value.replace(/\D/g, "");
-    
-        if (value.length <= 2) {
-          setValid(value);
-        } else if (value.length <= 4) {
-          setValid(`${value.slice(0, 2)} / ${value.slice(2)}`);
-        } else {
-          setValid(`${value.slice(0, 2)} / ${value.slice(2, 4)}`);
-        }
+      const handleValid = (value) => {
+        const Cleanvalue = value.toString().replace(/\D/g, "");
+          return `${Cleanvalue.slice(0, 2)} / ${Cleanvalue.slice(2)}`;
       };
 const handleLogin = async() =>{
   try{
@@ -89,6 +80,11 @@ const handleLogin = async() =>{
     console.log(response,"response");
     if(response.status == 200){
       setUserDetails(response.data);
+    localStorage.setItem("accountdetails", JSON.stringify({
+  accountnumber: response?.data?.accountNumber,
+  username: response?.data?.name
+    }));     
+     console.log("Account details saved:", response.data);
       setshowcard(true);
     }
   }catch(e){
@@ -146,7 +142,7 @@ const handleLogin = async() =>{
                 <div className="text-white flex flex-col text-center">
                   <p className="text-xs sm:text-sm">Valid Thru</p>
                   <p className="text-sm sm:text-base font-mono">
-                    {userDetails.valid ? userDetails.valid : "MM/YY"}
+                    {userDetails.valid ? handleValid(userDetails.valid) : "MM/YY"}
                   </p>
                 </div>
               </div>
@@ -168,7 +164,7 @@ const handleLogin = async() =>{
                 <div className="w-full p-4 sm:p-5 flex flex-row items-center mt-2">
                   <div className="h-8 sm:h-12 w-full bg-[repeating-linear-gradient(#fff_0_2px,#efefef_2px_6px)]"></div>
                   <div className="bg-white text-black p-1 sm:p-2 rounded-r-lg text-xs sm:text-sm font-mono min-w-[40px] text-center">
-                    {userDetails.cvv ? userDetails.cvv : "***"}
+                    {userDetails.cvv ? handleCvvChange(userDetails.cvv) : "***"}
                   </div>
                 </div>
   
@@ -218,7 +214,7 @@ const handleLogin = async() =>{
             />
           </div>
   
-          <button type="submit" className="w-full bg-primary flex items-center justify-center p-3 rounded-2xl hover:bg-secondary transition-colors cursor-pointer text-white font-semibold" >
+          <button type="submit" className="w-full mt-5 bg-primary flex items-center justify-center p-3 rounded-2xl hover:bg-secondary transition-colors cursor-pointer text-white font-semibold" >
            Login Account
           </button>
         </form>
