@@ -32,5 +32,11 @@ public class UserRepository {
             return "failed user added";
         }
     }
+    public UserModel findUser(UserModel user){
+        String sql = "SELECT * FROM users WHERE name = ? AND pin = ?";
+        return jdbcTemplate.queryForObject(sql,new Object[]{user.getName(),user.getPin()},
+        (rs,rownum) -> new UserModel(rs.getInt("id"), rs.getString("name"), rs.getLong("accountnumber"), rs.getInt("pin"), rs.getString("valid"), rs.getInt("cvv")));
+    }
+
 
 }

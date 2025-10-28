@@ -21,6 +21,18 @@ public class UserController {
     public String addUser(@RequestBody UserModel user){
         return repo.addUser(user);
     }
+    @PostMapping("/find")
+    public UserModel findUser(@RequestBody UserModel user){
+        return repo.findUser(user);
+    }
+    // @DeleteMapping("/delete/{id}")
+    // public String deleteUser(@PathVariable int id){
+    //     return repo.deleteUser(id);
+    // }
+    // @PutMapping("/update")
+    // public String updateUser(@RequestBody UserModel user){
+    //     return repo.updateUser(user);
+    // }
     @GetMapping("/{id}")
     public UserModel  getUserById(@PathVariable int id){
         return repo.getUserById(id);

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import logo from "../assets/logo.png";
 import chip from "../assets/chip.png";
-import { Link } from "react-router-dom";
+import { Link, Router, useNavigate } from "react-router-dom";
 import axios from "axios";
 const Login = () => {
   const [name, setName] = useState("");
@@ -10,7 +10,7 @@ const Login = () => {
   const [pin, setPin] = useState("");
   const [valid, setValid] = useState("");
   const [isRotated, setIsRotated] = useState(false);
-
+  const navigate = useNavigate();
   const handleAccountNumberChange = (e) => {
     const value = e.target.value.replace(/\D/g, "");
     if (value.length <= 16) {
@@ -27,7 +27,7 @@ const Login = () => {
 
   const handlePinChange = (e) => {
     const value = e.target.value.replace(/\D/g, "");
-    if (value.length <= 4) {
+    if (value.length < 5) {
       setPin(value);
     }
   };
@@ -70,7 +70,10 @@ const Login = () => {
     {
       withCredentials:true
     });
-    console.log(response)
+    if(response.status == 200){
+      console.log(response.data)
+      navigate("/homepage")
+    }
     }catch(e){
       console.log(e,"something went wrong while submitting the details")
     }

@@ -10,9 +10,9 @@ export default function BalanceDashboard() {
       title: 'Current Balance',
       amount: '$12,345.67',
       icon: FaWallet,
-      color: 'from-blue-500 to-blue-600',
-      bgColor: 'bg-blue-50',
-      textColor: 'text-blue-600'
+      color: 'from-primary to-secondary',
+      bgColor: 'bg-orange-50',
+      textColor: 'text-primary'
     },
     {
       title: 'Recent Deposit',
@@ -23,9 +23,13 @@ export default function BalanceDashboard() {
       textColor: 'text-green-600'
     },
   ];
-
+  
+  
+  const depositAmount = () =>{
+      console.log("depositeamout")
+    }
   return (
-    <div className='min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 sm:p-6 lg:p-8'>
+    <div className='min-h-calc(100vh-80px) bg-gradient-to-br from-gray-50 to-gray-100 p-4 sm:p-6 lg:p-8'>
       <div className="max-w-7xl mx-auto">
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
@@ -56,7 +60,7 @@ export default function BalanceDashboard() {
                   {card.title == "Current Balance" ?
                   <div className='flex items-center text-xs text-gray-500 mt-2'>
                   
-                    <button className='text-white bg-primary p-3'>Deposit Money</button>
+                    <button className='text-white bg-primary p-3 rounded-xl font-semibold hover:cursor-pointer' onClick={depositAmount}>Deposit Money</button>
                   
                   </div>
                    :
@@ -74,7 +78,7 @@ export default function BalanceDashboard() {
         <div className='mt-8 bg-white rounded-2xl shadow-md p-6'>
           <h3 className='text-lg font-semibold text-gray-800 mb-4'>Quick Actions</h3>
           <div className='flex flex-wrap gap-3'>
-            <button className='px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-200 text-sm font-medium'>
+            <button className='px-4 py-2 bg-gray-100  rounded-lg hover:bg-gray-300 transition-colors duration-200 text-sm font-medium text-gray-700'>
               Transfer Money
             </button>
             <button className='px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors duration-200 text-sm font-medium'>

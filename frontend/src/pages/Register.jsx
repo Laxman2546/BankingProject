@@ -11,6 +11,7 @@ const Register = () => {
       const [valid, setValid] = useState("");
       const [isRotated, setIsRotated] = useState(false);
       const[showcard,setshowcard]=useState(false);
+      const [userDetails,setUserDetails] = useState([]);
 
       const getData = async() =>{
         try{
@@ -50,10 +51,10 @@ const Register = () => {
         }
       };
     
-      const formatCardNumber = (number) => {
-        if (!number) return "1234 XXXX XXXX 2546";
+      const formatCardNumber = (cleanNumber) => {
+        if (!cleanNumber) return "1234 XXXX XXXX 2546";
     
-        const cleanNumber = number.replace(/\s/g, "");
+         
         const len = cleanNumber.length;
     
         if (len <= 4) return cleanNumber;
@@ -76,9 +77,27 @@ const Register = () => {
           setValid(`${value.slice(0, 2)} / ${value.slice(2, 4)}`);
         }
       };
+const handleLogin = async() =>{
+  try{
+    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URI}/api/users/find`,{
+      name,
+      pin
+    },
+    {
+      withCredentials:true
+    });
+    console.log(response,"response");
+    if(response.status == 200){
+      setUserDetails(response.data);
+      setshowcard(true);
+    }
+  }catch(e){
+    console.log(e,"something went wrong while submitting the details")
+  }
+}
+
   return (
      <div className="w-full min-h-screen flex flex-col lg:flex-row items-center justify-center gap-2 p-4 lg:p-8">
-       
         {showcard ?(
         <div className="w-full lg:w-1/2 flex flex-col items-center justify-center perspective ">
           <div
@@ -116,18 +135,18 @@ const Register = () => {
               <div className="text-white flex flex-col gap-2 p-4 pl-2 sm:p-2">
                 <p className="text-sm sm:text-md pl-1">Card Number</p>
                 <p className="text-xl sm:text-2xl -pl-2 tracking-wider">
-                  {formatCardNumber(accountNumber)}
+                  {formatCardNumber(userDetails.accountNumber)}
                 </p>
               </div>
   
               <div className="pl-3 sm:pl-3 flex flex-row justify-between items-center pr-3 text-start">
                 <p className="text-white text-sm sm:text-base font-medium truncate max-w-[60%]">
-                  {name ? name : "username"}
+                  {userDetails.name ? userDetails.name : "username"}
                 </p>
                 <div className="text-white flex flex-col text-center">
                   <p className="text-xs sm:text-sm">Valid Thru</p>
                   <p className="text-sm sm:text-base font-mono">
-                    {valid ? valid : "MM/YY"}
+                    {userDetails.valid ? userDetails.valid : "MM/YY"}
                   </p>
                 </div>
               </div>
@@ -149,7 +168,7 @@ const Register = () => {
                 <div className="w-full p-4 sm:p-5 flex flex-row items-center mt-2">
                   <div className="h-8 sm:h-12 w-full bg-[repeating-linear-gradient(#fff_0_2px,#efefef_2px_6px)]"></div>
                   <div className="bg-white text-black p-1 sm:p-2 rounded-r-lg text-xs sm:text-sm font-mono min-w-[40px] text-center">
-                    {cvv ? cvv : "***"}
+                    {userDetails.cvv ? userDetails.cvv : "***"}
                   </div>
                 </div>
   
@@ -170,7 +189,11 @@ const Register = () => {
         ):(
  <div className="w-full lg:w-1/2 flex flex-col gap-3 max-w-md  p-6 lg:p-8 rounded-3xl ">
           <h1 className="text-2xl font-semibold">Welcome Back!</h1>
-  
+      <form onSubmit={(e) =>{
+            e.preventDefault();
+            handleLogin();
+           }}>
+
           <div className="flex flex-col">
             <label className="p-2 font-medium">Name</label>
             <input
@@ -195,9 +218,11 @@ const Register = () => {
             />
           </div>
   
-          <button className="w-full bg-primary flex items-center justify-center p-3 rounded-2xl hover:bg-secondary transition-colors cursor-pointer text-white font-semibold" onClick={()=>setshowcard(true)}>
+          <button type="submit" className="w-full bg-primary flex items-center justify-center p-3 rounded-2xl hover:bg-secondary transition-colors cursor-pointer text-white font-semibold" >
            Login Account
           </button>
+        </form>
+
           <div>
             <p className="text-center">
              Don't have an account?
