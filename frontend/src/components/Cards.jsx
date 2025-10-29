@@ -4,23 +4,23 @@ import { IoMdTrendingUp } from "react-icons/io";
 import { FaCreditCard } from "react-icons/fa";
 import { FaDollarSign } from "react-icons/fa";
 import { FaArrowDown } from "react-icons/fa";
-export default function BalanceDashboard({handleDeposit}) {
+export default function BalanceDashboard({handleDeposit,balance}) {
   const cards = [
     {
-      title: 'Current Balance',
-      amount: '$12,345.67',
+      title: "Current Balance",
+      amount: `₹${balance}`,
       icon: FaWallet,
-      color: 'from-primary to-secondary',
-      bgColor: 'bg-orange-50',
-      textColor: 'text-primary'
+      color: "from-primary to-secondary",
+      bgColor: "bg-orange-50",
+      textColor: "text-primary",
     },
     {
-      title: 'Recent Deposit',
-      amount: '$45,678.90',
+      title: "Recent Deposit",
+      amount: "₹45,678.90",
       icon: FaArrowDown,
-      color: 'from-green-500 to-green-600',
-      bgColor: 'bg-green-50',
-      textColor: 'text-green-600'
+      color: "from-green-500 to-green-600",
+      bgColor: "bg-green-50",
+      textColor: "text-green-600",
     },
   ];
 

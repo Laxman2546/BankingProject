@@ -37,10 +37,18 @@ public class TransactionRepository {
 
         return "Deposit successful! New balance: ₹" + newBalance;
     }
-    public TransactionModel getbalance(int id){
-        String sql  = "SELECT * FROM transactions WHERE user_id = ?";
-        return jdbcTemplate.queryForObject(sql,new Object[]{id},
-        (rs,rownum) -> new TransactionModel(rs.getInt("id"),rs.getDouble("balance")));
-        
+            public TransactionModel getbalance(int id){
+                String sql  = "SELECT * FROM transactions WHERE user_id = ?";
+                return jdbcTemplate.queryForObject(sql,new Object[]{id},
+                (rs, rowNum) -> new TransactionModel(
+            rs.getInt("id"),
+            rs.getInt("sender_account"),
+            rs.getInt("receiver_account"),
+            rs.getDouble("amount"),
+            rs.getString("transaction_date"),
+            rs.getString("transaction_type"),
+            rs.getDouble("balance")
+)
+        );
     }
 }
