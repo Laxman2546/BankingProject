@@ -11,12 +11,14 @@ const HomePage = () => {
   const [name, setName] = useState("");
   const [showDeposit, setshowDeposit] = useState(false);
   const [balance, setBalance] = useState("");
+  const [recentDeposit, setRecentDeposit] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
+  const [transactionDate, setTransactionDate] = useState("");
+  const [modalType, setModalType] = useState("");
   const [userId, setUserId] = useState("");
 
   const handleLogout = () => {
     const removeAccount = localStorage.removeItem("accountdetails");
-    console.log(removeAccount, "removeAccount");
     navigate("/login");
   };
   useEffect(() => {
@@ -30,28 +32,31 @@ const HomePage = () => {
       const uniqueId = JSON.parse(username).id;
       getBalance(uniqueId);
     }
-  }, [navigate]);
+  }, [navigate, showDeposit]);
   const handleDeposit = () => {
+    setModalType("deposit");
     setshowDeposit(true);
   };
   const getBalance = async (id) => {
     try {
       const response = await axios.get(
-        `${
-          import.meta.env.VITE_BACKEND_URI
-        }/api/transactions/getbalance/${id}`,
+        `${import.meta.env.VITE_BACKEND_URI}/api/transactions/getbalance/${id}`,
         { withCredntials: true }
       );
-      console.log(response);
       setBalance(response.data.balance);
+      setTransactionDate(response.data.transactionDate);
+      setRecentDeposit(response.data.amount);
     } catch (e) {
       console.log(e);
     }
   };
 
-
   const handleDepositSuccess = () => {
     console.log("Deposit was successful, you might want to refresh data.");
+  };
+  const handleWithdraw = () => {
+    setModalType("withdraw");
+    setshowDeposit(true);
   };
   return (
     <div className="w-full h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-3">
@@ -77,6 +82,8 @@ const HomePage = () => {
         <DepositModal
           accountNumber={accountNumber}
           onClose={() => setshowDeposit(false)}
+          modalType={modalType}
+          balance={balance}
           onDepositSuccess={handleDepositSuccess}
         />
       )}
@@ -84,7 +91,13 @@ const HomePage = () => {
         <h1 className="text-2xl font-semibold ">Welcome Back, {name}</h1>
         <p className="text-gray-400 text-md ">here's your account overview</p>
       </div>
-      <Cards handleDeposit={handleDeposit} balance={balance} />
+      <Cards
+        handleDeposit={handleDeposit}
+        balance={balance}
+        recentDeposit={recentDeposit}
+        date={transactionDate}
+        handleWithdraw={handleWithdraw}
+      />
     </div>
   );
 };

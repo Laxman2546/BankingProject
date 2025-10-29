@@ -2,8 +2,8 @@ package com.codersbank.codersbank.models;
 
 public class TransactionModel {
     private int id;
-    private int senderAccount;
-    private int receiverAccount;
+    private long senderAccount;
+    private long receiverAccount;
     private double amount;
     private String transactionDate;
     private String transactionType;
@@ -13,7 +13,7 @@ public class TransactionModel {
     public TransactionModel() {
     }
 
-    public TransactionModel(int id, int senderAccount, int receiverAccount, double amount, String transactionDate, String transactionType,double balance) {
+    public TransactionModel(int id, long senderAccount, long receiverAccount, double amount, String transactionDate, String transactionType,double balance) {
         this.id = id;
         this.senderAccount = senderAccount;
         this.receiverAccount = receiverAccount;
@@ -36,19 +36,19 @@ public class TransactionModel {
         this.id = id;
     }
 
-    public int getSenderAccount() {
+    public long getSenderAccount() {
         return senderAccount;
     }
 
-    public void setSenderAccount(int senderAccount) {
+    public void setSenderAccount(long senderAccount) {
         this.senderAccount = senderAccount;
     }
 
-    public int getReceiverAccount() {
+    public long getReceiverAccount() {
         return receiverAccount;
     }
 
-    public void setReceiverAccount(int receiverAccount) {
+    public void setReceiverAccount(long receiverAccount) {
         this.receiverAccount = receiverAccount;
     }
 

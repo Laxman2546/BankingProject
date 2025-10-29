@@ -21,6 +21,12 @@ public class TransactionController{
             @RequestParam double amount) {
         return transRepo.deposit(accountNumber, amount);
     } 
+    @PostMapping("/withdraw")
+    public String withdraw(
+            @RequestParam Long accountNumber,
+            @RequestParam double amount) {
+        return transRepo.withdraw(accountNumber, amount);
+    } 
     @GetMapping("/getbalance/{id}")
     public TransactionModel getbalance(@PathVariable int id){
         return transRepo.getbalance(id);
