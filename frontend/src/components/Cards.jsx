@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaWallet } from "react-icons/fa";
 import { IoMdTrendingUp } from "react-icons/io";
 import { FaCreditCard } from "react-icons/fa";
 import { FaDollarSign } from "react-icons/fa";
 import { FaArrowDown } from "react-icons/fa";
-export default function BalanceDashboard() {
+export default function BalanceDashboard({handleDeposit}) {
   const cards = [
     {
       title: 'Current Balance',
@@ -23,11 +23,8 @@ export default function BalanceDashboard() {
       textColor: 'text-green-600'
     },
   ];
+
   
-  
-  const depositAmount = () =>{
-      console.log("depositeamout")
-    }
   return (
     <div className='min-h-calc(100vh-80px) bg-gradient-to-br from-gray-50 to-gray-100 p-2 sm:p-3 lg:p-5'>
       <div className="max-w-7xl">
@@ -59,7 +56,7 @@ export default function BalanceDashboard() {
                   {card.title == "Current Balance" ?
                   <div className='flex items-center text-xs text-gray-500 mt-2'>
                   
-                    <button className='text-white bg-primary p-3 rounded-xl font-semibold hover:cursor-pointer' onClick={depositAmount}>Deposit Money</button>
+                    <button className='text-white bg-primary p-3 rounded-xl font-semibold hover:cursor-pointer' onClick={handleDeposit}>Deposit Money</button>
                   
                   </div>
                    :

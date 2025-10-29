@@ -58,113 +58,126 @@ const Login = () => {
       setValid(`${value.slice(0, 2)} / ${value.slice(2, 4)}`);
     }
   };
-  const submitDetails =async() =>{
-    try{
-    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URI}/api/users/add`,{
-      name,
-      accountNumber,
-      cvv,
-      pin,
-      valid
-    },
-    {
-      withCredentials:true
-    });
-    if (response.status === 200) {
-    localStorage.setItem("accountdetails", JSON.stringify({
-  accountnumber: response?.data?.accountNumber,
-  username: response?.data?.name
-    }));       console.log("Account details saved:", response.data);
-    navigate("/homepage");
-}
-
-    }catch(e){
-      console.log(e,"something went wrong while submitting the details")
+  const submitDetails = async () => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URI}/api/users/add`,
+        {
+          name,
+          accountNumber,
+          cvv,
+          pin,
+          valid,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      if (response.status === 200) {
+        localStorage.setItem(
+          "accountdetails",
+          JSON.stringify({
+            accountnumber: response?.data?.accountNumber,
+            username: response?.data?.name,
+            id: response?.data?.id,
+          })
+        );
+        navigate("/homepage");
+      }
+    } catch (e) {
+      console.log(e, "something went wrong while submitting the details");
     }
-
-  }
+  };
   return (
     <div className="w-full min-h-screen flex flex-col lg:flex-row items-center justify-center gap-2 p-4 lg:p-8">
       <div className="w-full lg:w-1/2 flex flex-col gap-3 max-w-md  p-6 lg:p-8 rounded-3xl ">
         <h1 className="text-2xl font-semibold">Get started!</h1>
-    <form onSubmit={(e) =>{
-      e.preventDefault();
-      submitDetails();
-    }}>
-        <div className="flex flex-col">
-          <label className="p-2 font-medium">Name</label>
-          <input
-            type="text"
-            onChange={(e) => setName(e.target.value)}
-            onFocus={() => setIsRotated(false)}
-            value={name}
-            placeholder="Enter your name"
-            className="border-2 border-gray-500 w-full p-3 rounded-2xl placeholder:text-gray-500 outline-none pl-4  transition-colors"
-          />
-        </div>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            submitDetails();
+          }}
+        >
+          <div className="flex flex-col">
+            <label className="p-2 font-medium">Name</label>
+            <input
+              type="text"
+              onChange={(e) => setName(e.target.value)}
+              onFocus={() => setIsRotated(false)}
+              value={name}
+              placeholder="Enter your name"
+              className="border-2 border-gray-500 w-full p-3 rounded-2xl placeholder:text-gray-500 outline-none pl-4  transition-colors"
+            />
+          </div>
 
-        <div className="flex flex-col">
-          <label className="p-2 font-medium">Account Number</label>
-          <input
-            type="text"
-            placeholder="Enter your Account number"
-            onChange={handleAccountNumberChange}
-            onFocus={() => setIsRotated(false)}
-            value={accountNumber}
-            maxLength="16"
-            className="border-2 border-gray-500 w-full p-3 rounded-2xl placeholder:text-gray-500 outline-none pl-4  transition-colors"
-          />
-        </div>
+          <div className="flex flex-col">
+            <label className="p-2 font-medium">Account Number</label>
+            <input
+              type="text"
+              placeholder="Enter your Account number"
+              onChange={handleAccountNumberChange}
+              onFocus={() => setIsRotated(false)}
+              value={accountNumber}
+              maxLength="16"
+              className="border-2 border-gray-500 w-full p-3 rounded-2xl placeholder:text-gray-500 outline-none pl-4  transition-colors"
+            />
+          </div>
 
-        <div className="flex flex-col">
-          <label className="p-2 font-medium">CVV</label>
-          <input
-            type="text"
-            placeholder="Enter your CVV number"
-            onChange={handleCvvChange}
-            onFocus={() => setIsRotated(true)}
-            value={cvv}
-            maxLength="3"
-            className="border-2 border-gray-500 w-full p-3 rounded-2xl placeholder:text-gray-500 outline-none pl-4  transition-colors"
-          />
-        </div>
+          <div className="flex flex-col">
+            <label className="p-2 font-medium">CVV</label>
+            <input
+              type="text"
+              placeholder="Enter your CVV number"
+              onChange={handleCvvChange}
+              onFocus={() => setIsRotated(true)}
+              value={cvv}
+              maxLength="3"
+              className="border-2 border-gray-500 w-full p-3 rounded-2xl placeholder:text-gray-500 outline-none pl-4  transition-colors"
+            />
+          </div>
 
-        <div className="flex flex-col">
-          <label className="p-2 font-medium">Valid Thru</label>
-          <input
-            type="text"
-            placeholder="Enter your valid year"
-            onChange={handleValid}
-            onFocus={() => setIsRotated(false)}
-            value={valid}
-            className="border-2 border-gray-500 w-full p-3 rounded-2xl placeholder:text-gray-500 outline-none pl-4  transition-colors"
-          />
-        </div>
+          <div className="flex flex-col">
+            <label className="p-2 font-medium">Valid Thru</label>
+            <input
+              type="text"
+              placeholder="Enter your valid year"
+              onChange={handleValid}
+              onFocus={() => setIsRotated(false)}
+              value={valid}
+              className="border-2 border-gray-500 w-full p-3 rounded-2xl placeholder:text-gray-500 outline-none pl-4  transition-colors"
+            />
+          </div>
 
-        <div className="flex flex-col">
-          <label className="p-2 font-medium">Pin</label>
-          <input
-            type="password"
-            value={pin}
-            onChange={handlePinChange}
-            onFocus={() => setIsRotated(false)}
-            placeholder="Enter your pin number"
-            maxLength="4"
-            className="border-2 border-gray-500 w-full p-3 rounded-2xl placeholder:text-gray-500 outline-none pl-4  transition-colors"
-          />
-        </div>
+          <div className="flex flex-col">
+            <label className="p-2 font-medium">Pin</label>
+            <input
+              type="password"
+              value={pin}
+              onChange={handlePinChange}
+              onFocus={() => setIsRotated(false)}
+              placeholder="Enter your pin number"
+              maxLength="4"
+              className="border-2 border-gray-500 w-full p-3 rounded-2xl placeholder:text-gray-500 outline-none pl-4  transition-colors"
+            />
+          </div>
 
-        <button type="submit" className=" mt-5 w-full bg-primary flex items-center justify-center p-3 rounded-2xl hover:bg-secondary transition-colors cursor-pointer text-white font-semibold">
-          Register Account
-        </button>
-    </form>
+          <button
+            type="submit"
+            className=" mt-5 w-full bg-primary flex items-center justify-center p-3 rounded-2xl hover:bg-secondary transition-colors cursor-pointer text-white font-semibold"
+          >
+            Register Account
+          </button>
+        </form>
 
         <div>
           <p className="text-center">
             Have an account?{" "}
-              <Link to="/login" className="cursor-pointer hover:underline hover:text-primary">
-                Login
-              </Link >
+            <Link
+              to="/login"
+              className="cursor-pointer hover:underline hover:text-primary"
+            >
+              Login
+            </Link>
           </p>
         </div>
       </div>
