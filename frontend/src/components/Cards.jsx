@@ -9,6 +9,7 @@ export default function BalanceDashboard({
   balance,
   recentDeposit,
   handleWithdraw,
+  transactiontype,
   date,
 }) {
   const cards = [
@@ -78,10 +79,16 @@ export default function BalanceDashboard({
                       </button>
                     </div>
                   ) : (
-                    <div className="flex items-center   text-xs text-gray-500 mt-2">
-                      <span className="inline-block w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
-                      <span>Updated just now</span>
-                      <span className="ml-2">{date}</span>
+                    <div className="flex flex-col items-start gap-3
+                   text-xs text-gray-500 mt-2">
+                      <div>
+                        <span className=" font-semibold text-lg">{transactiontype}</span>
+                      </div>
+                      <div>
+                        <span className="inline-block w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
+                        <span>Updated just now</span>
+                        <span className="ml-2">{date}</span>
+                      </div>
                     </div>
                   )}
                 </div>

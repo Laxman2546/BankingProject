@@ -74,12 +74,14 @@ const Login = () => {
         }
       );
       if (response.status === 200) {
+        console.log(response)
         localStorage.setItem(
           "accountdetails",
           JSON.stringify({
-            accountnumber: response?.data?.accountNumber,
-            username: response?.data?.name,
-            id: response?.data?.id,
+            accountnumber: response?.data?.user?.accountNumber,
+            username: response?.data?.user?.name,
+            id: response?.data?.user?.id,
+            upi:response?.data?.upiId
           })
         );
         navigate("/homepage");

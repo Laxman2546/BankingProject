@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { BsBank } from "react-icons/bs";
-import { LuLogOut } from "react-icons/lu";
+import { LuCopy, LuLogOut } from "react-icons/lu";
 import Cards from "../components/Cards";
 import { useNavigate } from "react-router-dom";
 import DepositModal from "../components/DepositModal";
 import axios from "axios";
+import { FaRegCheckCircle } from "react-icons/fa";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -14,7 +15,10 @@ const HomePage = () => {
   const [recentDeposit, setRecentDeposit] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
   const [transactionDate, setTransactionDate] = useState("");
+  const [type,setType] = useState("")
+  const [isCopied,setisCopied] = useState(false)
   const [modalType, setModalType] = useState("");
+  const [upiId, setUpiId] = useState("");
   const [userId, setUserId] = useState("");
 
   const handleLogout = () => {
@@ -26,11 +30,15 @@ const HomePage = () => {
     if (!username) {
       navigate("/login");
     } else {
-      setName(JSON.parse(username).username);
-      setAccountNumber(JSON.parse(username).accountnumber);
-      setUserId(JSON.parse(username).id);
+      const userName = JSON.parse(username).username;
+      const userAccountNumber = JSON.parse(username).accountnumber;
       const uniqueId = JSON.parse(username).id;
+      const userUpiId = JSON.parse(username).upi;
+      setName(userName);
+      setAccountNumber(userAccountNumber);
+      setUserId(uniqueId);
       getBalance(uniqueId);
+      setUpiId(userUpiId);
     }
   }, [navigate, showDeposit]);
   const handleDeposit = () => {
@@ -46,6 +54,7 @@ const HomePage = () => {
       setBalance(response.data.balance);
       setTransactionDate(response.data.transactionDate);
       setRecentDeposit(response.data.amount);
+      setType(response.data.transactionType);;
     } catch (e) {
       console.log(e);
     }
@@ -57,6 +66,13 @@ const HomePage = () => {
   const handleWithdraw = () => {
     setModalType("withdraw");
     setshowDeposit(true);
+  };
+  const handleCopy = () => {
+    navigator.clipboard.writeText(upiId);
+    setisCopied(true)
+    setTimeout(() => {
+      setisCopied(false)
+    }, 2000);
   };
   return (
     <div className="w-full h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-3">
@@ -90,6 +106,11 @@ const HomePage = () => {
       <div className="p-5">
         <h1 className="text-2xl font-semibold ">Welcome Back, {name}</h1>
         <p className="text-gray-400 text-md ">here's your account overview</p>
+      <div className="max-w-fit mt-5 gap-5  p-3 flex items-center  border-1 rounded-xl border-gray-200 bg-gray-100">
+        <p>UPI ID: {upiId}</p>
+        {isCopied ? <FaRegCheckCircle />:        <LuCopy className="cursor-pointer" onClick={handleCopy}/>
+}
+      </div>
       </div>
       <Cards
         handleDeposit={handleDeposit}
@@ -97,6 +118,7 @@ const HomePage = () => {
         recentDeposit={recentDeposit}
         date={transactionDate}
         handleWithdraw={handleWithdraw}
+        transactiontype={type}
       />
     </div>
   );

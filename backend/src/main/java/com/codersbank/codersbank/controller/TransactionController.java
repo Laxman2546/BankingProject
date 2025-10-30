@@ -31,4 +31,10 @@ public class TransactionController{
     public TransactionModel getbalance(@PathVariable int id){
         return transRepo.getbalance(id);
     }
+    @PostMapping("/createaccount")
+    public String createAccount(
+            @RequestParam Long accountNumber,
+            @RequestParam String name) {
+            return transRepo.createAccountTransaction(accountNumber, name);
+    }
 }

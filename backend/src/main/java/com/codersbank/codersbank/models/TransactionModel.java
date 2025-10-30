@@ -8,12 +8,12 @@ public class TransactionModel {
     private String transactionDate;
     private String transactionType;
     public  double balance;
-
+    public String upiId;
 
     public TransactionModel() {
     }
 
-    public TransactionModel(int id, long senderAccount, long receiverAccount, double amount, String transactionDate, String transactionType,double balance) {
+    public TransactionModel(int id, long senderAccount, long receiverAccount, double amount, String transactionDate, String transactionType,double balance,String upiId) {
         this.id = id;
         this.senderAccount = senderAccount;
         this.receiverAccount = receiverAccount;
@@ -21,6 +21,7 @@ public class TransactionModel {
         this.transactionDate = transactionDate;
         this.transactionType = transactionType;
         this.balance = balance;
+        this.upiId = upiId;
     }
 
     public TransactionModel(int id, double balance) {
@@ -80,6 +81,12 @@ public class TransactionModel {
     }
     public void setBalance(double balance) {
         this.balance = balance;
+    }
+    public String upiId() {
+        return upiId;
+    }
+    public void setUpiId(String upiId) {
+        this.upiId = upiId;
     }
 
 }

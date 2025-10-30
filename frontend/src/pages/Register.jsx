@@ -85,13 +85,14 @@ const Register = () => {
       );
       console.log(response, "response");
       if (response.status == 200) {
-        setUserDetails(response.data);
+        setUserDetails(response.data.user);
         localStorage.setItem(
           "accountdetails",
           JSON.stringify({
-            accountnumber: response?.data?.accountNumber,
-            username: response?.data?.name,
-            id: response?.data?.id,
+            accountnumber: response?.data?.user?.accountNumber,
+            username: response?.data?.user?.name,
+            id: response?.data?.user?.id,
+            upi: response?.data?.upiId,
           })
         );
         console.log("Account details saved:", response.data);

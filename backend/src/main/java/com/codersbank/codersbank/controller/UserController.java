@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
-import java.util.List;
+import java.util.*;
 @RestController
 @RequestMapping("/api/users")
 
@@ -19,17 +19,17 @@ public class UserController {
         return repo.getAllUsers();
     }
     @PostMapping("/add")
-    public ResponseEntity<UserModel> addUser(@RequestBody UserModel user) {
-    UserModel newUser = repo.addUser(user);
-    if (newUser != null) {
-        return ResponseEntity.ok(newUser);
+    public ResponseEntity<Map<String, Object>> addUser(@RequestBody UserModel user) {
+    Map<String, Object> newUserResponse = repo.addUser(user);
+    if (newUserResponse != null) {
+        return ResponseEntity.ok(newUserResponse);
     } else {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 }
 
     @PostMapping("/find")
-    public UserModel findUser(@RequestBody UserModel user){
+    public Map<String, Object> findUser(@RequestBody UserModel user){
         return repo.findUser(user);
     }
     // @DeleteMapping("/delete/{id}")
