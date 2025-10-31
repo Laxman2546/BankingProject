@@ -3,6 +3,7 @@ import { FaWallet } from "react-icons/fa";
 import { IoMdTrendingUp } from "react-icons/io";
 import { FaCreditCard } from "react-icons/fa";
 import { FaDollarSign } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import { FaArrowDown } from "react-icons/fa";
 export default function BalanceDashboard({
   handleDeposit,
@@ -10,6 +11,7 @@ export default function BalanceDashboard({
   recentDeposit,
   handleWithdraw,
   transactiontype,
+  handleDownload,
   handleTransfer,
   date,
 }) {
@@ -31,7 +33,7 @@ export default function BalanceDashboard({
       textColor: "text-green-600",
     },
   ];
-  
+
   return (
     <div className="min-h-calc(100vh-80px) bg-gradient-to-br from-gray-50 to-gray-100 p-2 sm:p-3 lg:p-5">
       <div className="max-w-7xl">
@@ -80,10 +82,14 @@ export default function BalanceDashboard({
                       </button>
                     </div>
                   ) : (
-                    <div className="flex flex-col items-start gap-3
-                   text-xs text-gray-500 mt-2">
+                    <div
+                      className="flex flex-col items-start gap-3
+                   text-xs text-gray-500 mt-2"
+                    >
                       <div>
-                        <span className=" font-semibold text-lg">{transactiontype}</span>
+                        <span className=" font-semibold text-lg">
+                          {transactiontype}
+                        </span>
                       </div>
                       <div>
                         <span className="inline-block w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
@@ -105,14 +111,22 @@ export default function BalanceDashboard({
           <h3 className="text-lg font-semibold text-gray-800 mb-4">
             Quick Actions
           </h3>
-          <div className="flex flex-wrap gap-3" onClick={handleTransfer}>
-            <button className="px-4 py-2 bg-gray-100 cursor-pointer  rounded-lg hover:bg-gray-300 transition-colors duration-200 text-sm font-medium text-gray-700">
+          <div className="flex flex-wrap gap-3">
+            <button
+              onClick={handleTransfer}
+              className="px-4 py-2 bg-gray-100 cursor-pointer  rounded-lg hover:bg-gray-300 transition-colors duration-200 text-sm font-medium text-gray-700"
+            >
               Transfer Money
             </button>
-            <button className="px-4 py-2 bg-gray-100 cursor-pointer text-gray-700 rounded-lg hover:bg-gray-200 transition-colors duration-200 text-sm font-medium">
-              View Transactions
-            </button>
-            <button className="px-4 py-2 bg-gray-100 cursor-pointer text-gray-700 rounded-lg hover:bg-gray-200 transition-colors duration-200 text-sm font-medium">
+            <Link to="/showtransactions">
+              <button className="px-4 py-2 bg-gray-100 cursor-pointer text-gray-700 rounded-lg hover:bg-gray-200 transition-colors duration-200 text-sm font-medium">
+                View Transactions
+              </button>
+            </Link>
+            <button
+              onClick={handleDownload}
+              className="px-4 py-2 bg-gray-100 cursor-pointer text-gray-700 rounded-lg hover:bg-gray-200 transition-colors duration-200 text-sm font-medium"
+            >
               Download Report
             </button>
           </div>

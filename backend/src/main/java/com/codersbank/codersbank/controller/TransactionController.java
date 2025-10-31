@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import java.util.*;
+import java.util.List;
 
 
 @RestController
@@ -43,5 +44,9 @@ public class TransactionController{
         @RequestParam String upiId,
         @RequestParam double amount){
         return transRepo.transfer(senderAccountNumber, upiId, amount);
+        }
+    @GetMapping("/gettransactions/{accountNumber}")
+        public List<TransactionModel> getTransactions(@PathVariable Long accountNumber){
+            return transRepo.getTransactions(accountNumber);   
         }
 }

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { BsBank } from "react-icons/bs";
 import { LuCopy, LuLogOut } from "react-icons/lu";
 import Cards from "../components/Cards";
 import { useNavigate } from "react-router-dom";
 import DepositModal from "../components/DepositModal";
 import axios from "axios";
 import { FaRegCheckCircle } from "react-icons/fa";
+import Navbar from "../components/Navbar";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -21,10 +21,7 @@ const HomePage = () => {
   const [upiId, setUpiId] = useState("");
   const [userId, setUserId] = useState("");
 
-  const handleLogout = () => {
-    const removeAccount = localStorage.removeItem("accountdetails");
-    navigate("/login");
-  };
+
   const handleTransfer = () => {
     setModalType("transfer");
     setshowDeposit(true);
@@ -78,26 +75,12 @@ const HomePage = () => {
       setisCopied(false);
     }, 2000);
   };
+  const download = () => {
+    console.log("download");
+  };
   return (
     <div className="w-full h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-3">
-      <nav className="w-full flex flex-row items-center pr-12 justify-between bg-gray-100 ">
-        <div className="flex flex-row items-center">
-          <BsBank
-            size={50}
-            className="m-4 bg-primary rounded-2xl p-3  text-white"
-          />
-          <h1 className="text-black font-medium text-lg">Coder's Bank</h1>
-        </div>
-        <div className="flex flex-row gap-2 bg-red-500 p-2 rounded-lg items-center ">
-          <button
-            className="text-white font-semiBold cursor-pointer"
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
-          <LuLogOut size={20} className="text-white" />
-        </div>
-      </nav>
+      <Navbar />
       {showDeposit && (
         <DepositModal
           accountNumber={accountNumber}
@@ -110,8 +93,10 @@ const HomePage = () => {
       <div className="p-5">
         <h1 className="text-2xl font-semibold ">Welcome Back, {name}</h1>
         <p className="text-gray-400 text-md ">here's your account overview</p>
-        <div className="max-w-fit mt-5 gap-5  p-3 flex items-center  border-1 rounded-xl border-gray-200 bg-gray-100">
-          <p>UPI ID: {upiId}</p>
+        <div className="max-w-fit mt-5 gap-5  p-3 flex items-center  border-2 rounded-xl border-gray-200 bg-gray-100">
+          <p>
+            UPI ID: <span className="font-mono letter-wide text-gray-500">{upiId}</span>
+          </p>
           {isCopied ? (
             <FaRegCheckCircle />
           ) : (
@@ -126,6 +111,7 @@ const HomePage = () => {
         date={transactionDate}
         handleWithdraw={handleWithdraw}
         handleTransfer={handleTransfer}
+        handleDownload={download}
         transactiontype={type}
       />
     </div>

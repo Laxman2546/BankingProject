@@ -171,4 +171,20 @@ public class TransactionRepository {
         return "Transfer successful! New balance: ₹" + senderNewBalance;
     }
 
+    public List<TransactionModel> getTransactions(Long accountNumber){
+        String transactionsSql = "SELECT * FROM transactions WHERE sender_account = ? OR receiver_account = ? ORDER BY id DESC";
+        List<TransactionModel> transactions = jdbcTemplate.query(transactionsSql,new Object[]{accountNumber, accountNumber},
+                (rs, rowNum) -> new TransactionModel(
+            rs.getInt("id"),
+            rs.getLong("sender_account"),
+            rs.getLong("receiver_account"),
+            rs.getDouble("amount"),
+            rs.getString("transaction_date"),
+            rs.getString("transaction_type"),
+            rs.getDouble("balance"),
+            rs.getString("upi_id")
+));
+        return transactions;
+
+    }
 }
