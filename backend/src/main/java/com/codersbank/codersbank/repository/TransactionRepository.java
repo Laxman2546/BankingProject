@@ -49,10 +49,6 @@ public class TransactionRepository {
     return upiId;
 }
 
-
-
-
-
     public String deposit(Long accountNumber, double amount) {
         String findUserSql = "SELECT id FROM users WHERE accountnumber = ?";
         List<Map<String, Object>> users = jdbcTemplate.queryForList(findUserSql, accountNumber);
@@ -115,6 +111,64 @@ public class TransactionRepository {
 ));
         return transactions.isEmpty() ? null : transactions.get(0);
     }
+    public String transfer(Long senderAccountNumber, String upiId, double amount) {
+        String findUserSql = "SELECT id FROM users WHERE accountnumber = ?";
+        List<Map<String, Object>> users = jdbcTemplate.queryForList(findUserSql, senderAccountNumber);
+        if (users.isEmpty()) {
+            return "Sender account not found!";
+        }
+        int senderId = ((Number) users.get(0).get("id")).intValue();
 
+        String findReceiverUserSql = "SELECT user_id FROM transactions WHERE upi_id = ? ORDER BY id ASC LIMIT 1";
+        List<Integer> receiverIds = jdbcTemplate.query(findReceiverUserSql, new Object[]{upiId}, (rs, rowNum) -> rs.getInt("user_id"));
+
+        if (receiverIds.isEmpty()) {
+            return "Receiver not found!";
+        }
+        int receiverId = receiverIds.get(0);
+
+        if (senderId == receiverId) {
+            return "You cannot send money to your own UPI ID!";
+        }
+
+        String findReceiverAccountSql = "SELECT accountnumber FROM users WHERE id = ?";
+        List<Long> receiverAccountNumbers = jdbcTemplate.query(findReceiverAccountSql, new Object[]{receiverId}, (rs, rowNum) -> rs.getLong("accountnumber"));
+        if (receiverAccountNumbers.isEmpty()) {
+            return "Receiver account number not found!";
+        }
+        Long receiverAccountNumber = receiverAccountNumbers.get(0);
+
+
+        String lastBalanceSql = "SELECT balance FROM transactions WHERE user_id = ? ORDER BY id DESC LIMIT 1";
+        List<Double> senderBalances = jdbcTemplate.query(lastBalanceSql, new Object[]{senderId},
+                (rs, rowNum) -> rs.getDouble("balance"));
+
+        double senderLastBalance = senderBalances.isEmpty() ? 0.0 : senderBalances.get(0);
+
+        if (senderLastBalance < amount) {
+            return "Insufficient balance!";
+        }
+
+        List<Double> receiverBalances = jdbcTemplate.query(lastBalanceSql, new Object[]{receiverId},
+                (rs, rowNum) -> rs.getDouble("balance"));
+        double receiverLastBalance = receiverBalances.isEmpty() ? 0.0 : receiverBalances.get(0);
+
+        double senderNewBalance = senderLastBalance - amount;
+        double receiverNewBalance = receiverLastBalance + amount;
+
+        String debitSql = """
+            INSERT INTO transactions (sender_account, receiver_account, amount, transaction_type, balance, user_id, upi_id)
+            VALUES (?, ?, ?, 'debit', ?, ?, ?)
+        """;
+        jdbcTemplate.update(debitSql, senderAccountNumber, receiverAccountNumber, amount, senderNewBalance, senderId, null);
+
+        String creditSql = """
+            INSERT INTO transactions (sender_account, receiver_account, amount, transaction_type, balance, user_id, upi_id)
+            VALUES (?, ?, ?, 'credit', ?, ?, ?)
+        """;
+        jdbcTemplate.update(creditSql, senderAccountNumber, receiverAccountNumber, amount, receiverNewBalance, receiverId, null);
+
+        return "Transfer successful! New balance: ₹" + senderNewBalance;
+    }
 
 }

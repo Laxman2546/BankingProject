@@ -10,6 +10,7 @@ const DepositModal = ({
 }) => {
   const [amount, setAmount] = useState("");
   const [error, setError] = useState("");
+  const [upiId, setUpiId] = useState("");
   const [message, setMessage] = useState("");
 
   const handleDeposit = async (e) => {
@@ -78,13 +79,43 @@ const DepositModal = ({
       );
     }
   };
+  const handleTransfer = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URI}/api/transactions/transfer`,
+        null,
+        {
+          params: {
+            senderAccountNumber: accountNumber,
+            upiId,
+            amount,
+          },
+        }
+      );
+      console.log(response.data);
+      setMessage(response.data);
+      onDepositSuccess();
+      setTimeout(() => {
+        onClose();
+      }, 2000);
+    } catch (e) {
+      setError(
+        err.response?.data?.message || "An error occurred during deposit."
+      );
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50 transition-opacity duration-300">
       <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-2xl w-11/12 max-w-md transform transition-all duration-300 scale-95 hover:scale-100">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-bold text-gray-800">
-            {modalType == "deposit" ? "Deposit Money" : "Withdraw Money"}
+            {modalType == "deposit"
+              ? "Deposit Money"
+              : modalType == "withdraw"
+              ? "Withdraw Money"
+              : "Transfer Money"}
           </h2>
           <button
             onClick={onClose}
@@ -94,8 +125,33 @@ const DepositModal = ({
           </button>
         </div>
         <form
-          onSubmit={modalType == "deposit" ? handleDeposit : handleWithdraw}
+          onSubmit={
+            modalType == "deposit"
+              ? handleDeposit
+              : modalType == "withdraw"
+              ? handleWithdraw
+              : handleTransfer
+          }
         >
+          {modalType == "transfer" && (
+            <div className="mb-4">
+              <label
+                htmlFor="amount"
+                className="block text-gray-700 text-sm font-bold mb-2"
+              >
+                UPI ID
+              </label>
+              <input
+                type="text"
+                id="upiId"
+                value={upiId}
+                onChange={(e) => setUpiId(e.target.value)}
+                className="shadow-sm appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                placeholder="Enter Receiver's upi id"
+                required
+              />
+            </div>
+          )}
           <div className="mb-4">
             <label
               htmlFor="amount"
@@ -113,6 +169,7 @@ const DepositModal = ({
               required
             />
           </div>
+
           {error && <p className="text-red-500 text-xs italic mb-4">{error}</p>}
           {message && (
             <p className="text-green-500 text-xs italic mb-4">{message}</p>
@@ -129,7 +186,13 @@ const DepositModal = ({
               type="submit"
               className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-secondary font-semibold transition-colors"
             >
-              {`Confirm ${modalType == "deposit" ? "Deposit" : "Withdraw"}`}
+              {`Confirm ${
+                modalType == "deposit"
+                  ? "Deposit"
+                  : modalType == "withdraw"
+                  ? "Withdraw"
+                  : "Transfer"
+              }`}
             </button>
           </div>
         </form>

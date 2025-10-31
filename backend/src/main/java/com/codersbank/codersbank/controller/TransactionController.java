@@ -37,4 +37,11 @@ public class TransactionController{
             @RequestParam String name) {
             return transRepo.createAccountTransaction(accountNumber, name);
     }
+    @PostMapping("/transfer")
+    public String transfer(
+        @RequestParam Long senderAccountNumber,
+        @RequestParam String upiId,
+        @RequestParam double amount){
+        return transRepo.transfer(senderAccountNumber, upiId, amount);
+        }
 }

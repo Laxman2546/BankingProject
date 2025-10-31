@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS transactions (
     sender_account BIGINT,
     receiver_account BIGINT,
     amount DECIMAL(10,2) NOT NULL,
-    transaction_type ENUM('deposit', 'transfer', 'withdraw','created') NOT NULL,
+    transaction_type ENUM('deposit', 'transfer', 'withdraw','created', 'debit', 'credit') NOT NULL,
     transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     balance DECIMAL(10,2) NOT NULL,
     user_id INT NOT NULL,

@@ -10,6 +10,7 @@ export default function BalanceDashboard({
   recentDeposit,
   handleWithdraw,
   transactiontype,
+  handleTransfer,
   date,
 }) {
   const cards = [
@@ -30,7 +31,7 @@ export default function BalanceDashboard({
       textColor: "text-green-600",
     },
   ];
-
+  
   return (
     <div className="min-h-calc(100vh-80px) bg-gradient-to-br from-gray-50 to-gray-100 p-2 sm:p-3 lg:p-5">
       <div className="max-w-7xl">
@@ -104,14 +105,14 @@ export default function BalanceDashboard({
           <h3 className="text-lg font-semibold text-gray-800 mb-4">
             Quick Actions
           </h3>
-          <div className="flex flex-wrap gap-3">
-            <button className="px-4 py-2 bg-gray-100  rounded-lg hover:bg-gray-300 transition-colors duration-200 text-sm font-medium text-gray-700">
+          <div className="flex flex-wrap gap-3" onClick={handleTransfer}>
+            <button className="px-4 py-2 bg-gray-100 cursor-pointer  rounded-lg hover:bg-gray-300 transition-colors duration-200 text-sm font-medium text-gray-700">
               Transfer Money
             </button>
-            <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors duration-200 text-sm font-medium">
+            <button className="px-4 py-2 bg-gray-100 cursor-pointer text-gray-700 rounded-lg hover:bg-gray-200 transition-colors duration-200 text-sm font-medium">
               View Transactions
             </button>
-            <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors duration-200 text-sm font-medium">
+            <button className="px-4 py-2 bg-gray-100 cursor-pointer text-gray-700 rounded-lg hover:bg-gray-200 transition-colors duration-200 text-sm font-medium">
               Download Report
             </button>
           </div>

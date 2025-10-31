@@ -15,8 +15,8 @@ const HomePage = () => {
   const [recentDeposit, setRecentDeposit] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
   const [transactionDate, setTransactionDate] = useState("");
-  const [type,setType] = useState("")
-  const [isCopied,setisCopied] = useState(false)
+  const [type, setType] = useState("");
+  const [isCopied, setisCopied] = useState(false);
   const [modalType, setModalType] = useState("");
   const [upiId, setUpiId] = useState("");
   const [userId, setUserId] = useState("");
@@ -24,6 +24,10 @@ const HomePage = () => {
   const handleLogout = () => {
     const removeAccount = localStorage.removeItem("accountdetails");
     navigate("/login");
+  };
+  const handleTransfer = () => {
+    setModalType("transfer");
+    setshowDeposit(true);
   };
   useEffect(() => {
     const username = localStorage.getItem("accountdetails");
@@ -54,7 +58,7 @@ const HomePage = () => {
       setBalance(response.data.balance);
       setTransactionDate(response.data.transactionDate);
       setRecentDeposit(response.data.amount);
-      setType(response.data.transactionType);;
+      setType(response.data.transactionType);
     } catch (e) {
       console.log(e);
     }
@@ -69,9 +73,9 @@ const HomePage = () => {
   };
   const handleCopy = () => {
     navigator.clipboard.writeText(upiId);
-    setisCopied(true)
+    setisCopied(true);
     setTimeout(() => {
-      setisCopied(false)
+      setisCopied(false);
     }, 2000);
   };
   return (
@@ -106,11 +110,14 @@ const HomePage = () => {
       <div className="p-5">
         <h1 className="text-2xl font-semibold ">Welcome Back, {name}</h1>
         <p className="text-gray-400 text-md ">here's your account overview</p>
-      <div className="max-w-fit mt-5 gap-5  p-3 flex items-center  border-1 rounded-xl border-gray-200 bg-gray-100">
-        <p>UPI ID: {upiId}</p>
-        {isCopied ? <FaRegCheckCircle />:        <LuCopy className="cursor-pointer" onClick={handleCopy}/>
-}
-      </div>
+        <div className="max-w-fit mt-5 gap-5  p-3 flex items-center  border-1 rounded-xl border-gray-200 bg-gray-100">
+          <p>UPI ID: {upiId}</p>
+          {isCopied ? (
+            <FaRegCheckCircle />
+          ) : (
+            <LuCopy className="cursor-pointer" onClick={handleCopy} />
+          )}
+        </div>
       </div>
       <Cards
         handleDeposit={handleDeposit}
@@ -118,6 +125,7 @@ const HomePage = () => {
         recentDeposit={recentDeposit}
         date={transactionDate}
         handleWithdraw={handleWithdraw}
+        handleTransfer={handleTransfer}
         transactiontype={type}
       />
     </div>
