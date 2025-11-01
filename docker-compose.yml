@@ -4,7 +4,7 @@ services:
     container_name: codersbank-mysql
     restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-root}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=codersbank
     expose:
       - "3306"
@@ -26,11 +26,11 @@ services:
     container_name: codersbank-backend
     restart: always
     ports:
-      - "${PORT:-8080}:8080"
+      - "${PORT}:8080"
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://codersbank-mysql:3306/codersbank?useSSL=false&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=${MYSQL_ROOT_PASSWORD:-root}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_ROOT_PASSWORD}
     depends_on:
       mysql:
         condition: service_healthy
