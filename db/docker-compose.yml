@@ -4,12 +4,41 @@ services:
     container_name: codersbank-mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: codersbank
-    ports:
-      - "3306:3306"
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-root}
+      - MYSQL_DATABASE=codersbank
+    expose:
+      - "3306"
     volumes:
+      - mysql_data:/var/lib/mysql
       - ./initdb:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+  backend:
+    image: lakshman2546/codersbank:latest
+    container_name: codersbank-backend
+    restart: always
+    ports:
+      - "${PORT:-8080}:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://codersbank-mysql:3306/codersbank?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_ROOT_PASSWORD:-root}
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
 
 volumes:
-  db_data:
+  mysql_data:
+    driver: local

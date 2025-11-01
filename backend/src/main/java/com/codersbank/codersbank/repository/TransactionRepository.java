@@ -171,20 +171,33 @@ public class TransactionRepository {
         return "Transfer successful! New balance: ₹" + senderNewBalance;
     }
 
-    public List<TransactionModel> getTransactions(Long accountNumber){
-        String transactionsSql = "SELECT * FROM transactions WHERE sender_account = ? OR receiver_account = ? ORDER BY id DESC";
-        List<TransactionModel> transactions = jdbcTemplate.query(transactionsSql,new Object[]{accountNumber, accountNumber},
-                (rs, rowNum) -> new TransactionModel(
-            rs.getInt("id"),
-            rs.getLong("sender_account"),
-            rs.getLong("receiver_account"),
-            rs.getDouble("amount"),
-            rs.getString("transaction_date"),
-            rs.getString("transaction_type"),
-            rs.getDouble("balance"),
-            rs.getString("upi_id")
-));
+    public List<TransactionModel> getTransactions(Long accountNumber) {
+        String findUserSql = "SELECT id FROM users WHERE accountnumber = ?";
+        List<Map<String, Object>> users = jdbcTemplate.queryForList(findUserSql, accountNumber);
+    
+        if (users.isEmpty()) {
+            return List.of();
+        }
+    
+        int userId = ((Number) users.get(0).get("id")).intValue();
+    
+        String transactionsSql = "SELECT * FROM transactions WHERE user_id = ? ORDER BY id DESC";
+        List<TransactionModel> transactions = jdbcTemplate.query(transactionsSql, new Object[]{userId},
+            (rs, rowNum) -> {
+                java.sql.Timestamp timestamp = rs.getTimestamp("transaction_date");
+                String formattedDate = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(timestamp);
+                return new TransactionModel(
+                    rs.getInt("id"),
+                    rs.getLong("sender_account"),
+                    rs.getLong("receiver_account"),
+                    rs.getDouble("amount"),
+                    formattedDate,
+                    rs.getString("transaction_type"),
+                    rs.getDouble("balance"),
+                    rs.getString("upi_id")
+                );
+            });
+    
         return transactions;
-
     }
 }
