@@ -11,7 +11,9 @@ RUN apt-get update && \
     ca-certificates \
     curl \
     gnupg-agent \
-    software-properties-common
+    software-properties-common \
+    sudo \
+    iptables
 
 # Add Docker's official GPG key and repository
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
@@ -21,16 +23,29 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
 RUN apt-get update && \
     apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose
 
-# Copy the docker-compose file
-COPY docker-compose.yml .
+# Create a non-root user
+RUN useradd -m -s /bin/bash docker-user && \
+    usermod -aG sudo docker-user && \
+    echo "docker-user ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
-# Create startup script
+# Copy the docker-compose file
+COPY docker-compose.yml /home/docker-user/
+
+WORKDIR /home/docker-user
+
+# Create startup script with proper permissions
 RUN echo '#!/bin/bash\n\
-service docker start\n\
-dockerd &\n\
+sudo mkdir -p /var/run/docker.sock\n\
+sudo chmod 666 /var/run/docker.sock\n\
+sudo service docker start\n\
+sudo dockerd --iptables=false &\n\
 sleep 5\n\
-docker-compose up\n' > /start.sh && \
-    chmod +x /start.sh
+sudo chmod 666 /var/run/docker.sock\n\
+docker-compose up\n' > start.sh && \
+    chmod +x start.sh
+
+# Switch to non-root user
+USER docker-user
 
 # Command to run startup script
-CMD ["/start.sh"]
+CMD ["./start.sh"]
