@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { LuCopy, LuLogOut } from "react-icons/lu";
+import { LuCopy } from "react-icons/lu";
 import Cards from "../components/Cards";
 import { useNavigate } from "react-router-dom";
 import DepositModal from "../components/DepositModal";
 import axios from "axios";
 import { FaRegCheckCircle } from "react-icons/fa";
+import { downloadPDF } from "../config/download";
 import Navbar from "../components/Navbar";
 
 const HomePage = () => {
@@ -20,6 +21,7 @@ const HomePage = () => {
   const [modalType, setModalType] = useState("");
   const [upiId, setUpiId] = useState("");
   const [userId, setUserId] = useState("");
+  const [transactionsData, setTransactionsData] = useState([]);
 
 
   const handleTransfer = () => {
@@ -39,6 +41,7 @@ const HomePage = () => {
       setAccountNumber(userAccountNumber);
       setUserId(uniqueId);
       getBalance(uniqueId);
+      getTransactions(userAccountNumber);
       setUpiId(userUpiId);
     }
   }, [navigate, showDeposit]);
@@ -61,6 +64,17 @@ const HomePage = () => {
     }
   };
 
+  const getTransactions = async (accountNumber) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URI}/api/transactions/gettransactions/${accountNumber}`
+      );
+      setTransactionsData(response.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const handleDepositSuccess = () => {
     console.log("Deposit was successful, you might want to refresh data.");
   };
@@ -76,7 +90,8 @@ const HomePage = () => {
     }, 2000);
   };
   const download = () => {
-    console.log("download");
+    const accountDetails = JSON.parse(localStorage.getItem("accountdetails"));
+    downloadPDF(accountNumber, transactionsData, accountDetails);
   };
   return (
     <div className="w-full h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-3">
