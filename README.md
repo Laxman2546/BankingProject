@@ -31,7 +31,6 @@ A comprehensive full-stack banking application that provides secure account mana
 
 ### 👤 Account Management
 - **Create Account**: Register with unique user credentials
-- **Secure Authentication**: Login/logout functionality with Spring Security
 - **Profile Management**: View and update account details
 - **Balance Inquiry**: Real-time account balance checking
 
@@ -70,7 +69,6 @@ A comprehensive full-stack banking application that provides secure account mana
 | Technology | Purpose |
 |-----------|---------|
 | **Java Spring Boot** | RESTful API development |
-| **Spring Security** | Authentication & authorization |
 | **Spring Data JPA** | Database interaction layer |
 | **Hibernate** | ORM for entity mapping |
 | **Maven** | Dependency management |
@@ -387,7 +385,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - GitHub: [@Laxman2546](https://github.com/Laxman2546)
 - LinkedIn: [lakshman-25l46](https://linkedin.com/in/lakshman-25l46)
-- Email: your.email@example.com
+- Email: ellalakshman4@gmail.com
 
 ---
 
@@ -405,7 +403,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 If you have any questions or need help, please:
 - Open an issue in this repository
 - Contact via LinkedIn
-- Email at your.email@example.com
+- Email at ellalakshman4@gmail.com
 
 ---
 
